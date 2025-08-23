@@ -1,9 +1,18 @@
-enter in my docker container = docker run --rm -it -v %cd%:/root/env myos-buildenv
-make build-x86_64
-qemu-system-x86_64 -cdrom .\dist\x86_64\kernel.iso
+# Build the Docker image locally (run this in your project root):
+docker build -t myos-buildenv buildenv
 
+# Enter the Docker container (macOS/Linux):
+mac -- docker run --rm -it -v "$(pwd)":/root/env myos-buildenv
+
+windows -- qemu-system-x86_64 -cdrom .\dist\x86_64\kernel.iso
+
+# Build and run your OS:
+make build-x86_64
+qemu-system-x86_64 -cdrom ./dist/x86_64/kernel.iso
+
+# Notes:
 0xb8000 = video memory starts at
-hlt = halt os and recieve not further instruction
+hlt = halt os and receive no further instruction
 resb 4096 * 4 = reserves 4 kb of memory
 jne = jump not equal to
 ret = return
